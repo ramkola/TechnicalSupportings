@@ -5,33 +5,37 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using KaterinaPostStuff.Models;
+using KaterinaPostStuff.Providers;
 
 namespace KaterinaPostStuff.Controllers
 {
     public class HomeController : Controller
     {
+        private OrderProvider _orderProvider;
+
+        public HomeController(OrderProvider orderProvider)
+        {
+            _orderProvider = orderProvider;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var orders = _orderProvider.GetAllOrders();
+            return View(orders);
         }
 
-        public IActionResult About()
+        public IActionResult DoStuff(int id)
         {
-            ViewData["Message"] = "Your application description page.";
+            var order = _orderProvider.GetOrderById(id);
 
-            return View();
-        }
+            if (order == null)
+            {
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+            }
 
-            return View();
-        }
+            // Call the SProc, do whatever
 
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(order);
         }
     }
 }
