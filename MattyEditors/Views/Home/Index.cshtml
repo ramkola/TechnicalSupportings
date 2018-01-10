@@ -1,0 +1,39 @@
+﻿@model MattyEditors.Models.ParentModel
+@{
+    ViewBag.Title = "Parent Editor";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Property)
+        @Html.TextBoxFor(m => m.Property)
+    </div>
+
+    <div id="childeditors">
+        @Html.EditorFor(m => m.Children)
+    </div>
+    <button type="button" id="addnewrow">Add Row</button>
+
+    <button type="submit">Save / Add</button>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        var newRow, firstIdx, currIdx;
+        $(document).ready(function () {
+            newRow = $('#childeditors').children().last().clone();
+            firstIdx = /\[(\d)\]/g.exec($('input', newRow).first().attr('name'))[1];
+            currIdx = firstIdx;
+        })
+        $('#addnewrow').click(function () {
+            var row = $(newRow).clone();
+            currIdx++;
+            $('input', row).each(function (i, e) { $(e).attr('name', $(e).attr('name').replace('[' + firstIdx + ']', '[' + currIdx + ']')); });
+            $('#childeditors').append(row);
+        });
+    </script>
+}
