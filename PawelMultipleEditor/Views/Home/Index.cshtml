@@ -1,0 +1,50 @@
+﻿@model PawelMultipleEditor.Models.SampleParent
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form method="post">
+    <input asp-for="Name" class="form-control" />
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Col 1</th>
+                <th>Col 2</th>
+                <th>Col 3</th>
+                <th>Col 4</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(int i = 0; i < Model.Children.Count; i++)
+            {
+            <tr>
+                <td>
+                    <input type="hidden" asp-for="@Model.Children[i].Id" />
+                    @Model.Children[i].Id
+                </td>
+                <td>
+                    <input asp-for="@Model.Children[i].Column1" />
+                </td>
+                <td>
+                    <input asp-for="@Model.Children[i].Column2" />
+                </td>
+                <td>
+                    <input asp-for="@Model.Children[i].Column3" />
+                </td>
+                <td>
+                    <input asp-for="@Model.Children[i].Column4" />
+                </td>
+            </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-right">
+                    <button type="submit" class="btn btn-success">Save</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
